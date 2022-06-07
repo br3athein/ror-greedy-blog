@@ -1,4 +1,4 @@
-FROM ruby:3.1.2
+FROM ruby:3.0.0
 
 RUN set -e \
     && mkdir -p /app \
