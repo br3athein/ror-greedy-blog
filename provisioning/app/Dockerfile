@@ -2,7 +2,7 @@ FROM ruby:3.0.0
 
 RUN set -e \
     && mkdir -p /app \
-    && apt update && apt install -y \
+    && apt-get update && apt-get install -y \
     sqlite3 \
     && gem install rails \
     && echo \
@@ -10,11 +10,11 @@ RUN set -e \
     && ruby --version \
     && rails --version \
     && echo sqlite $(sqlite3 --version) \
-    && apt clean \
+    && apt-get clean \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 COPY app /app
 WORKDIR /app
 RUN bundle install
 
-CMD ["bin/rails", "server"]
+CMD ["bin/rails", "server", "-b", "0.0.0.0"]
