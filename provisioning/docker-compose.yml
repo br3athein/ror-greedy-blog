@@ -5,11 +5,7 @@ services:
     build:
       context: ..
       dockerfile: provisioning/app/Dockerfile
-    environment:
-      RAILSUSER: '${RAILSUSER}'
+    ports:
+      - 8000:3000
     volumes:
       - ../app:/app
-    working_dir: /app/blog
-    ports:
-      - 8080:3000
-    command: ["bin/rails", "server"]
