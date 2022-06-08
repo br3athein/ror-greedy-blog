@@ -3,6 +3,7 @@
 <h3>Let us browse some articles.</h3>
 <%= link_to '...or create your own!', new_article_path %>
 <hr/>
+<%= Article.visible_count %> article(s) have been published so far:
 
 <ul>
   <% @articles.each do |article| %>

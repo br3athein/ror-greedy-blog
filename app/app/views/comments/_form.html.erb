@@ -1,5 +1,10 @@
 <%= form_with model: [@article, @article.comments.build] do |form| %>
   <p>
+    <%= form.label :status %>
+    <%= form.select :status, Comment.const_get('VALID_STATUSES'), selected: 'public' %>
+  </p>
+
+  <p>
     <%= form.text_field :commenter, placeholder: 'Your name' %>
   </p>
 
