@@ -4,6 +4,7 @@ RUN set -e \
     && mkdir -p /app \
     && apt-get update && apt-get install -y \
     sqlite3 \
+    # although it's been covered by the bundle, we're gonna install this anyway
     && gem install rails \
     && echo \
     && echo 'Done setting up.' \
