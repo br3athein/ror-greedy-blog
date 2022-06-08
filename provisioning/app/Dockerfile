@@ -17,4 +17,6 @@ COPY app /app
 WORKDIR /app
 RUN bundle install
 
-CMD ["bin/rails", "server", "-b", "0.0.0.0"]
+CMD ["bin/rails", "server", "--binding", "0.0.0.0", "--port", "3000"]
+
+EXPOSE 3000
