@@ -37,7 +37,6 @@ class ArticlesController < ApplicationController
 
   def destroy
     @article = Article.find params[:id]
-    @article.comments.each(&:destroy)
     @article.destroy
 
     redirect_to articles_path, status: :see_other
