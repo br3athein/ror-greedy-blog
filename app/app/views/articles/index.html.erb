@@ -1,13 +1,15 @@
 <h1>My motherfucking website</h1>
 
 <h3>Let us browse some articles.</h3>
+<%= link_to '...or create your own!', new_article_path %>
+<hr/>
 
 <ul>
   <% @articles.each do |article| %>
     <li>
-      <%= link_to article.title, article %>
+      <h3>
+        <%= link_to article.title, article %>
+      </h3>
     </li>
   <% end %>
 </ul>
-
-<%= link_to 'New article!', new_article_path %>

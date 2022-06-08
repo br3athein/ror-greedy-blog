@@ -9,5 +9,10 @@
     turbo_confirm: 'Sure? There will be no turning back.',
 } %>
 
+<% if @article.comments.any? %>
+<h3>Comments</h4>
 <%= render @article.comments %>
-<%= render 'comments/form', article: @article %>
+<% end %>
+
+<h4>Add a comment</h4>
+<%= render 'comments/form' %>

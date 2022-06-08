@@ -1,7 +1,7 @@
 <%= form_with model: @article do |form| %>
   <div>
     <%= form.label :title %><br/>
-    <%= form.text_field :title %>
+    <%= form.text_field :title, placeholder: 'Article title' %>
     <% @article.errors.full_messages_for(:title).each do |message| %>
       <div><%= message %></div>
     <% end %>
@@ -9,7 +9,7 @@
 
   <div>
     <%= form.label :body %><br/>
-    <%= form.text_area :body %>
+    <%= form.text_area :body, placeholder: 'Article body' %>
     <% @article.errors.full_messages_for(:body).each do |message| %>
       <div><%= message %></div>
     <% end %>
