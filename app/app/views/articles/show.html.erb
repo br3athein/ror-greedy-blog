@@ -1,12 +1,41 @@
-<h4>(this is a generic header for the article, don't mind this)</h4>
-
-<%= link_to 'Back to index', articles_path %>
-
 <h1><%= @article.title %></h1>
+<%= link_to 'Back to index', articles_path %>
 <p><%= @article.body %></p>
 
 <%= link_to 'Edit', edit_article_path(@article) %>
-<%= link_to 'Destroy', article_path(@article), data: {
+|
+<%= link_to 'Delete article', article_path(@article), data: {
     turbo_method: :delete,
     turbo_confirm: 'Sure? There will be no turning back.',
 } %>
+
+<% if @article.comments.any? %>
+  <h3>Comments</h3>
+
+  <ul>
+    <% @article.comments.each do |comment| %>
+      <li>
+        <p><%= comment.body %></p>
+        <p>
+          - <b><%= comment.commenter %></b>
+          @ <%= time_tag comment.created_at, 'data-local': 'time-ago' %>
+        </p>
+      </li>
+    <% end %>
+  </ul>
+<% end %>
+
+<h4>Add a comment</h4>
+<%= form_with model: [@article, @article.comments.build] do |form| %>
+  <p>
+    <%= form.text_field :commenter, placeholder: 'Your name' %>
+  </p>
+
+  <p>
+    <%= form.text_area :body, placeholder: 'Your comment' %>
+  </p>
+
+  <p>
+    <%= form.submit %>
+  </p>
+<% end %>
