@@ -1,0 +1,14 @@
+<h4>Add a comment</h4>
+<%= form_with model: [@article, @article.comments.build] do |form| %>
+  <p>
+    <%= form.text_field :commenter, placeholder: 'Your name' %>
+  </p>
+
+  <p>
+    <%= form.text_area :body, placeholder: 'Your comment' %>
+  </p>
+
+  <p>
+    <%= form.submit %>
+  </p>
+<% end %>
