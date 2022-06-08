@@ -1,9 +1,10 @@
-
-<p><%= comment.body %></p>
-<p>
-  <%= @i %>
-  - #<%= comment.id %>
-  <strong><%= comment.commenter %></strong>
-  posted <%= time_tag comment.created_at, 'data-local': 'time-ago' %>
-</p>
-<hr/>
+<% unless comment.archived? %>
+  <p><%= comment.body %></p>
+  <p>
+    <%= @i %>
+    - #<%= comment.id %>
+    <strong><%= comment.commenter %></strong>
+    posted <%= time_tag comment.created_at, 'data-local': 'time-ago' %>
+  </p>
+  <hr/>
+<% end %>
