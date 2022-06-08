@@ -6,6 +6,10 @@
     <strong><%= comment.commenter %></strong>
     posted <%= comment.status_adjective %>
     <%= time_tag comment.created_at, 'data-local': 'time-ago' %>
+    | <%= link_to 'delete', [comment.article, comment], data: {
+        turbo_method: :delete,
+        turbo_confirm: 'This will destroy the comment. Proceed?'
+      } %>
   </p>
   <hr/>
 <% end %>
