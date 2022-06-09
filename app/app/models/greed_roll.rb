@@ -1,0 +1,2 @@
+class GreedRoll < ApplicationRecord
+end

@@ -1,0 +1,2 @@
+class GreedSession < ApplicationRecord
+end

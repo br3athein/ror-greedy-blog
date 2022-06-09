@@ -1,0 +1,11 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  players: 1
+  ongoing: false
+  winner: 1
+
+two:
+  players: 1
+  ongoing: false
+  winner: 1
