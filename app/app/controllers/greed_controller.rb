@@ -3,6 +3,8 @@ class GreedController < ApplicationController
     (1..5).each do |position|
       load_pos position
     end
+
+    @score = score dice
   end
 
   def rules; end
@@ -40,6 +42,10 @@ class GreedController < ApplicationController
 
   def extract_pos(fieldname)
     fieldname[/^dice_(\d+)$/, 1]
+  end
+
+  def dice
+    (1..5).map { |pos| instance_variable_get dice_varname pos }
   end
 
   def score(dice)
