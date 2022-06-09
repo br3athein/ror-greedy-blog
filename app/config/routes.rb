@@ -7,4 +7,8 @@ Rails.application.routes.draw do
   resources :articles do
     resources :comments
   end
+
+  get '/greed', to: 'greed#interface'
+  post '/greed/roll', to: 'greed#roll'
+  get '/greed/rules', to: 'greed#rules'
 end

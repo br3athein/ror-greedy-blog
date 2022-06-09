@@ -1,0 +1,20 @@
+<h2>The Greed</h2>
+<%= link_to 'Rules', '/greed/rules' %>
+
+<table border="1px">
+  <td><%= @dice_1 %></td>
+  <td><%= @dice_2 %></td>
+  <td><%= @dice_3 %></td>
+  <td><%= @dice_4 %></td>
+  <td><%= @dice_5 %></td>
+</table>
+
+<%= form_with url: '/greed/roll' do |form| %>
+  <% (1..5).each do |i| %>
+    <% fieldname = "dice_#{i.to_s}" %>
+    <%= form.label "Keep #{fieldname}" %>
+    <%= form.check_box fieldname %>
+  <% end %>
+
+  <%= form.submit 'Roll the dice!' %>
+<% end %>
