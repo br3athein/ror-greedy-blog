@@ -1,7 +1,6 @@
 <% unless comment.archived? %>
   <p><%= comment.body %></p>
   <p>
-    <%= @i %>
     - #<%= comment.id %>
     <strong><%= comment.commenter %></strong>
     posted <%= comment.status_adjective %>

@@ -18,13 +18,10 @@ module Visible
   end
 
   def status_adjective
-    case status
-    when 'public'
-      'publicly'
-    when 'private'
-      'privately'
-    else
-      'somehow'
-    end
+    adjectives = {
+      'public' => 'publicly',
+      'private' => 'privately'
+    }
+    Hash.new('somehow').merge(adjectives)[status]
   end
 end
