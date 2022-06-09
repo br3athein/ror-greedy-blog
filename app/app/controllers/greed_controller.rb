@@ -1,3 +1,5 @@
+# The class is dead, don't use it.
+# @deprecated
 class GreedController < ApplicationController
   def interface
     (1..5).each do |position|

@@ -6,6 +6,7 @@
 <h4>Turn of player #<%= @greed_session.turn %></h4>
 
 <%= render 'greed_rolls/form' %>
+<%= button_to 'End turn', "#{greed_session_path @greed_session}/pass" %>
 
 <h3><%= @greed_session.rolls.count %> rolls so far</h3>
 <%= render @greed_session.rolls %>

@@ -3,7 +3,14 @@ class GreedSession < ApplicationRecord
   validates :players, presence: true, numericality: { only_integer: true, greater_than_or_equal_to: 2 }
   after_create :initial_roll
 
-  def roll(keeps = nil)
+  def roll_next(keeps = nil)
+    create_next_roll keeps
+    advance_player_turn
+
+    self
+  end
+
+  def create_next_roll
     roll = rolls.new player: turn
 
     keeps.each do |dice, keep|
@@ -14,6 +21,13 @@ class GreedSession < ApplicationRecord
     end
 
     roll.save
+    roll
+  end
+
+  def advance_player_turn
+    self.turn += 1
+    self.turn -= players if turn > players
+    self
   end
 
   def initial_roll

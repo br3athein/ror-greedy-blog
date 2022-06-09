@@ -31,11 +31,8 @@ class GreedSessionsController < ApplicationController
   def pass
     @greed_session = GreedSession.find params[:id]
 
-    if @greed_session.turn == @greed_session.players
-      @greed_session.turn = 1
-    else
-      @greed_session.turn += 1
-    end
+    @greed_session.advance_player_turn
+    @greed_session.save
 
     redirect_to @greed_session
   end

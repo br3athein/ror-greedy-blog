@@ -5,12 +5,15 @@ Rails.application.routes.draw do
   root 'articles#index'
 
   resources :articles do
-    resources :comments
+    resources :comments, only: [:create, :destroy]
   end
+
+  # TODO: try moving the following actions inside `:greed_sessions'
+  post 'greed_sessions/:id/roll' => 'greed_sessions#roll'
+  post 'greed_sessions/:id/pass' => 'greed_sessions#pass'
 
   resources :greed_sessions do
     # resources :greed_rolls
 
-    post 'roll' => 'greed_sessions#roll'
   end
 end

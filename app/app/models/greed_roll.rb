@@ -26,4 +26,17 @@ class GreedRoll < ApplicationRecord
   def roll_single
     rand(1..6)
   end
+
+  def score
+    (1..6).inject(0) do |acc, i|
+      count = dice.count i
+      acc += i == 1 ? 1000 : 100 * i if count >= 3
+
+      count -= 3 if count >= 3
+      acc += 100 * count if i == 1
+      acc += 50 * count if i == 5
+
+      acc
+    end
+  end
 end
