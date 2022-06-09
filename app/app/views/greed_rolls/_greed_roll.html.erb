@@ -1,6 +1,6 @@
 <p><table width="30%" style="margin: 2px; border: 2px solid; border-collapse: collapse; text-align: center">
   <tr>
-    <td rowspan="2" style="border: 1px solid">Roll <%= greed_roll.number %></td>
+    <td rowspan="2" style="border: 1px solid">Roll <%= greed_roll.number %> @ P<%= greed_roll.player %></td>
     <td style="border: 1px solid">Score:</td>
     <% greed_roll.dice.each do |score| %>
       <td width="20px"><%= score %></td>

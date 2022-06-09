@@ -31,7 +31,8 @@ class GreedSession < ApplicationRecord
   end
 
   def initial_roll
-    rolls.new.initial_roll.save
+    roll = rolls.new player: turn
+    roll.initial_roll.save
   end
 
   def roll_single

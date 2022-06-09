@@ -32,6 +32,7 @@ class GreedSessionsController < ApplicationController
     @greed_session = GreedSession.find params[:id]
 
     @greed_session.advance_player_turn
+    @greed_session.initial_roll
     @greed_session.save
 
     redirect_to @greed_session
