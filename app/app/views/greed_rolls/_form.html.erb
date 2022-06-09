@@ -1,0 +1,21 @@
+<%= form_with url: "#{greed_session_url @greed_session}/roll" do |form| %>
+  <table>
+    <tr>
+      <% (1..5).each do |i| %>
+        <td>
+          <%= form.label "Keep #{i}" %>
+        </td>
+      <% end %>
+    </tr>
+
+    <tr>
+      <% (1..5).each do |i| %>
+        <td>
+          <%= form.check_box "keep[dice_#{i}]", checked: false %>
+        </td>
+      <% end %>
+    </tr>
+  </table>
+
+  <%= form.submit 'Roll the dice!' %>
+<% end %>

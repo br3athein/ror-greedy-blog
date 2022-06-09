@@ -15,7 +15,7 @@
   <% (1..5).each do |i| %>
     <% fieldname = "dice_#{i.to_s}" %>
     <%= form.label "Keep #{fieldname}" %>
-    <%= form.check_box fieldname %>
+    <%= form.check_box fieldname, checked: true %>
   <% end %>
 
   <%= form.submit 'Roll the dice!' %>

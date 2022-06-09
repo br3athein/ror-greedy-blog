@@ -1,0 +1,6 @@
+<%= form_with model: @greed_session do |form| %>
+  <%= form.label 'Player count' %>
+  <%= form.number_field :players, value: 2 %>
+  <br/>
+  <%= form.submit 'Start a game!' %>
+<% end %>
