@@ -1,8 +1,8 @@
-<p><table width="30%" style="margin: 2px; border: 2px solid; border-collapse: collapse; text-align: center">
+<p><table width="40%" style="margin: 1px; border: 2px solid; border-collapse: collapse; text-align: center">
   <tr>
-    <td rowspan="2" style="border: 1px solid">Roll <%= greed_roll.number %></td>
-    <td rowspan="2" style="border: 1px solid">Score: <%= greed_roll.score %></td>
-    <td style="border: 1px solid">Rolled:</td>
+    <td rowspan="2" style="border: 1px solid; width: 20%"><strong>Roll <%= greed_roll.number %></strong></td>
+    <td rowspan="2" style="border: 1px solid; width: 25%"><strong>Score: <%= greed_roll.score %></strong></td>
+    <td style="border: 1px solid; width: 20%">Rolled:</td>
     <% greed_roll.dice.each do |rolled| %>
       <td width="20px"><%= rolled %></td>
     <% end %>
@@ -10,7 +10,7 @@
   <tr>
     <td style="border: 1px solid">Scoring?</td>
     <% greed_roll.scoring.each do |scoring| %>
-      <td><%= if scoring then 'X' else '-' end %></td>
+      <td><%= '<>' if scoring %></td>
     <% end %>
   </tr>
 </table></p>
