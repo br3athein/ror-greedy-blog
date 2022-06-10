@@ -24,4 +24,14 @@ class GreedSession < ApplicationRecord
   def current_leg
     legs.last
   end
+
+  def scores
+    (1..players).map do |i|
+      [i, player_score(i)]
+    end.to_h
+  end
+
+  def player_score(player)
+    legs.where(player: player).map(&:score).sum
+  end
 end

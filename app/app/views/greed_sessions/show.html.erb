@@ -3,13 +3,14 @@
 <hr/>
 
 <h3>(<%= @greed_session.players %> players)</h3>
+<%= render 'scoreboard' %>
 <h4>Turn of player #<%= @greed_session.turn %></h4>
 
 <% if @greed_session.legs.any? %>
 <% @leg = @greed_session.current_leg %>
 <% end %>
 
-<%= render 'greed_rolls/controls' %>
+<%= render 'controls' %>
 <% if @leg %>
 <hr/>
 <h3>Current leg:</h3>
