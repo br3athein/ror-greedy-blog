@@ -3,6 +3,7 @@ class GreedRoll < ApplicationRecord
   before_create :assign_number
   before_create :roll
 
+  # Dice faces that are unambiguously scoreable.
   SCORING_DICES = [1, 5].freeze
 
   def dice(pos = nil)
@@ -19,6 +20,7 @@ class GreedRoll < ApplicationRecord
     end
   end
 
+  # Calculate the score for the roll.
   def score
     (1..6).inject(0) do |acc, i|
       count = dice.count i
@@ -32,19 +34,23 @@ class GreedRoll < ApplicationRecord
     end
   end
 
-  def triple_on?(number)
-    dice.count(number) >= 3
+  # Does the roll has the three-of-a-kind on FACE?
+  def triple_on?(face)
+    dice.count(face) >= 3
   end
 
   def scoring?(pos)
-    value = dice[pos]
-    SCORING_DICES.include?(value) || triple_on?(value)
+    face = dice[pos]
+    SCORING_DICES.include?(face) || triple_on?(face)
   end
 
   def scoring
     map_dice { |i| scoring? i }
   end
 
+  # Is the dice set final and can't be improved?
+  #
+  # This is the same as saying that each position in the hand is scoreable.
   def terminal?
     !scoring.include? false
   end
@@ -53,6 +59,7 @@ class GreedRoll < ApplicationRecord
     leg.rolls.where(number: number - 1).first
   end
 
+  # Roll the state of hand based on the previous hand in the leg.
   def roll
     ancestor = fetch_ancestor
 
@@ -60,7 +67,7 @@ class GreedRoll < ApplicationRecord
       if ancestor&.scoring?(i) && !ancestor.terminal?
         ancestor.dice[i]
       else
-        roll_single
+        roll_face
       end
     end
 
@@ -69,13 +76,14 @@ class GreedRoll < ApplicationRecord
 
   private
 
+  # Run a callback over each of hand's positions.
   def map_dice(&block)
-    (0..4).map do |i|
-      block.call i
+    (0..4).map do |position|
+      block.call position
     end
   end
 
-  def roll_single
+  def roll_face
     rand(1..6)
   end
 

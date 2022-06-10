@@ -15,15 +15,19 @@ class GreedSession < ApplicationRecord
 
   # Check if the game has ended.
   def sudden_death!
-    self.showdown_initiator ||= current_player if player_hits_showdown?
+    enforce_endgame_conditions
 
-    # game always ends in the showdown
+    # game always ends in the showdown...
     return false unless showdown?
 
-    save
-
-    # ...after each of the players has broke a leg in it.
+    # ...and after each of the players has broke a leg in it.
     next_player == showdown_initiator
+  end
+
+  # Check if the current player starts the showdown.
+  def enforce_endgame_conditions
+    self.showdown_initiator ||= current_player if player_hits_showdown?
+    save if showdown?
   end
 
   def showdown?
@@ -42,7 +46,7 @@ class GreedSession < ApplicationRecord
   def current_player
     return 1 unless legs.any?
 
-    legs.last.player
+    current_leg.player
   end
 
   def next_player
@@ -50,10 +54,6 @@ class GreedSession < ApplicationRecord
     return 1 if current_player == players
 
     current_player + 1
-  end
-
-  def player_has_moves?(player)
-    !player_legs(player).last.final?
   end
 
   def turn
@@ -70,21 +70,17 @@ class GreedSession < ApplicationRecord
     end.to_h
   end
 
+  # All of PLAYER's legs.
   def player_legs(player = current_player)
     legs.where(player: player)
   end
 
+  # Return a first leg that exceeded the entry score for PLAYER.
   def opener_leg(player = current_player)
     player_legs(player).find { |leg| leg.score >= ENTRY_SCORE }
   end
 
-  def persistent_legs(player = current_player)
-    opener = opener_leg(player)
-    return [] unless opener
-
-    player_legs(player).where(number: opener.number..)
-  end
-
+  # Sum scores on PLAYER's legs contributing to the final score.
   def player_score(player = current_player)
     opener = opener_leg player
     return 0 unless opener
@@ -92,10 +88,14 @@ class GreedSession < ApplicationRecord
     player_legs(player).where(number: opener.number..).map(&:score).sum
   end
 
+  # Tell whether PLAYER has bought-in in the game.
+  #
+  # Meaning that the PLAYER has a leg with worth at least ENTRY_SCORE points
   def player_in_game?(player = current_player)
     !opener_leg(player).nil?
   end
 
+  # Does the current player initiate showdown?
   def player_hits_showdown?
     player_score >= SHOWDOWN_SCORE
   end
