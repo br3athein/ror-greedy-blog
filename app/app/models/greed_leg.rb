@@ -30,9 +30,11 @@ class GreedLeg < ApplicationRecord
   end
 
   def pun
-    case [gain, rolls.count, rolls.last.terminal?]
+    case [gain, rolls.count, rolls.last&.terminal?]
     in [0, 1, _]
       'Oof, tough luck!'
+    in [0, _, false]
+      %|Welp, that's why the game is called "Greed".|
     in [_, 1, true]
       'Strike!'
     else nil end
