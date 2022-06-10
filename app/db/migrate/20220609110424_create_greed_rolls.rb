@@ -11,12 +11,6 @@ class CreateGreedRolls < ActiveRecord::Migration[7.0]
       t.integer :dice_3, comment: 'Score on dice 3'
       t.integer :dice_4, comment: 'Score on dice 4'
       t.integer :dice_5, comment: 'Score on dice 5'
-
-      t.boolean :dice_1_kept, comment: 'Whether dice 1 was kept on the previous roll'
-      t.boolean :dice_2_kept, comment: 'Whether dice 2 was kept on the previous roll'
-      t.boolean :dice_3_kept, comment: 'Whether dice 3 was kept on the previous roll'
-      t.boolean :dice_4_kept, comment: 'Whether dice 4 was kept on the previous roll'
-      t.boolean :dice_5_kept, comment: 'Whether dice 5 was kept on the previous roll'
     end
   end
 end

@@ -7,9 +7,9 @@
     <% end %>
   </tr>
   <tr>
-    <td style="border: 1px solid">Kept?</td>
+    <td style="border: 1px solid">Scoring?</td>
     <% (1..5).each do |pos| %>
-      <td><%= if greed_roll.kept? pos then 'X' else '-' end %></td>
+      <td><%= if greed_roll.scoring? pos then 'X' else '-' end %></td>
     <% end %>
   </tr>
 </table></p>

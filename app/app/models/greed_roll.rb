@@ -7,12 +7,10 @@ class GreedRoll < ApplicationRecord
   end
 
   def dice(pos = nil)
-    dice = ->(i) { send "dice_#{i}" }
-
     if pos.is_a? Integer
-      dice.call pos
+      send "dice_#{pos}"
     else
-      (1..5).map { |i| dice.call i }
+      map_dice { |i| dice i }
     end
   end
 
@@ -42,20 +40,27 @@ class GreedRoll < ApplicationRecord
   end
 
   def scoring?(pos)
-    scoring.include? dice[pos]
+    scoring[pos - 1]
   end
 
   # Roll non-scoring positions. Or everything, if this is a first roll.
   def roll
-    previous_roll = self.session.rolls.last
-    map_dice do |i|
+    previous_roll = session&.rolls&.last
 
+    map_dice do |i|
+      send "dice_#{i}=", if previous_roll&.scoring?(i)
+                           previous_roll.dice i
+                         else
+                           roll_single
+                         end
     end
+
+    self
   end
 
   def map_dice(&block)
-    (1..5).each do |i|
-      block.call i, dice[i]
+    (1..5).map do |i|
+      block.call i
     end
   end
 
