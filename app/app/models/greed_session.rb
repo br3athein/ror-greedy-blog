@@ -5,6 +5,7 @@ class GreedSession < ApplicationRecord
   after_create :advance
 
   ENTRY_SCORE = 300
+  SHOWDOWN_SCORE = 3000
 
   def advance
     legs.create player: next_player
@@ -53,5 +54,9 @@ class GreedSession < ApplicationRecord
     return 0 unless opener
 
     player_legs(player).where(number: opener.number..).map(&:score).sum
+  end
+
+  def showdown?
+    scores.values.find { |score| score >= SHOWDOWN_SCORE }
   end
 end
