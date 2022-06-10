@@ -8,6 +8,17 @@ class GreedLeg < ApplicationRecord
     rolls.create
   end
 
+  def gain
+    return nil unless rolls.any?
+    return rolls.last.score if rolls.count == 1
+
+    rolls.last.score - rolls[-2].score
+  end
+
+  def terminal?
+    rolls.last.terminal? || gain.zero?
+  end
+
   private
 
   def assign_number

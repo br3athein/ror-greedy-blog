@@ -1,4 +1,7 @@
 <div style="border: 1px solid; margin-top: 20px; padding: 20px">
-  Leg <%= greed_leg.number %>
+  <strong>Leg <%= greed_leg.number %></strong>
+  <% unless greed_leg.gain.nil? %>
+    | last gain: <%= greed_leg.gain %>
+  <% end %>
   <%= render greed_leg.rolls %>
 </div>

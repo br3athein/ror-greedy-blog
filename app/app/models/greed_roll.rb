@@ -45,6 +45,10 @@ class GreedRoll < ApplicationRecord
     map_dice { |i| scoring? i }
   end
 
+  def terminal?
+    !scoring.include? false
+  end
+
   def fetch_ancestor
     leg.rolls.where(number: number - 1).first
   end
