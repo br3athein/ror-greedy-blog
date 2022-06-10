@@ -1,10 +1,9 @@
 class GreedRoll < ApplicationRecord
   belongs_to :session, class_name: 'GreedSession', foreign_key: :session_id
+  after_create :assign_number
 
   def dice
-    (1..5).map do |i|
-      send "dice_#{i}"
-    end
+    (1..5).map { |i| get_dice i }
   end
 
   def kept?(pos)
@@ -38,5 +37,9 @@ class GreedRoll < ApplicationRecord
 
       acc
     end
+  end
+
+  def assign_number
+    self.number = session.rolls.count + 1
   end
 end

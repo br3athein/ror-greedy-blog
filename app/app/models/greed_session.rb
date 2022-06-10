@@ -10,14 +10,14 @@ class GreedSession < ApplicationRecord
     self
   end
 
-  def create_next_roll
+  def next_roll(keeps)
     roll = rolls.new player: turn
 
     keeps.each do |dice, keep|
       keep = keep == '1'
       position = dice[/\d+/]
-      roll.send "dice_#{position}_kept", keep == '1'
-      roll.send "dice_#{position}=", keep ? new_roll : rolls.last.get_dice(pos)
+      roll.send "dice_#{position}_kept=", keep == '1'
+      roll.send "dice_#{position}=", keep ? rolls.last.get_dice(position) : roll_single
     end
 
     roll.save

@@ -8,5 +8,11 @@
 <%= render 'greed_rolls/form' %>
 <%= button_to 'End turn', "#{greed_session_path @greed_session}/pass" %>
 
+<% if @greed_session.rolls.any? %>
+<h3>Latest roll</h3>
+<%= render @greed_session.rolls.last %>
+<hr/>
+<% end %>
+
 <h3><%= @greed_session.rolls.count %> rolls so far</h3>
 <%= render @greed_session.rolls %>

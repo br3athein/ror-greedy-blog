@@ -24,7 +24,9 @@ class GreedSessionsController < ApplicationController
   # Roll a new set of dice.
   def roll
     @greed_session = GreedSession.find params[:id]
-    @greed_session.roll roll_params
+    @greed_session.next_roll roll_params
+
+    redirect_to @greed_session
   end
 
   # Transfer the turn to other player.
