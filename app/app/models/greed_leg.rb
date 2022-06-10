@@ -18,7 +18,7 @@ class GreedLeg < ApplicationRecord
   end
 
   def terminal?
-    rolls.last.terminal? || botched?
+    rolls.last&.terminal? || botched?
   end
 
   def scoreable?
@@ -26,7 +26,7 @@ class GreedLeg < ApplicationRecord
   end
 
   def botched?
-    gain.zero?
+    gain&.zero?
   end
 
   def pun

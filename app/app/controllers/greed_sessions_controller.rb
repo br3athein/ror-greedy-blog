@@ -27,8 +27,6 @@ class GreedSessionsController < ApplicationController
     leg = @greed_session.current_leg
     leg.add_roll
 
-    @greed_session.advance if leg.terminal?
-
     redirect_to @greed_session
   end
 

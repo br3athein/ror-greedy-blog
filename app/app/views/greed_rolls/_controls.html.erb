@@ -1,6 +1,6 @@
 <div>
 <div style="display: inline-block">
-<%= button_to 'Roll the dice!', "#{greed_session_path @greed_session}/roll" %>
+<%= button_to 'Roll the dice!', "#{greed_session_path @greed_session}/roll", disabled: @leg&.terminal? %>
 </div>
 <div style="display: inline-block">
 <%= button_to 'Keep what you have', "#{greed_session_path @greed_session}/pass", inline: true %>
