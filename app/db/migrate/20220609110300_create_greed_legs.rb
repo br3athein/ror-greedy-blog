@@ -5,6 +5,8 @@ class CreateGreedLegs < ActiveRecord::Migration[7.0]
 
       t.integer :number, comment: 'An order of the leg in the session'
       t.integer :player, comment: 'A player running this leg'
+
+      t.boolean :final, comment: 'Is this a final leg for the player?', default: false
     end
   end
 end

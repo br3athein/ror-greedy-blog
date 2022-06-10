@@ -8,7 +8,16 @@ class GreedSession < ApplicationRecord
   SHOWDOWN_SCORE = 3000
 
   def advance
-    legs.create player: next_player
+    current_leg.terminate! if player_showdown?
+    if player_has_moves? next_player
+      legs.create player: next_player
+    else
+      proclaim_winner
+    end
+  end
+
+  def proclaim_winner
+    self.winner = player
   end
 
   def current_player
@@ -22,6 +31,14 @@ class GreedSession < ApplicationRecord
     return 1 if current_player == players
 
     current_player + 1
+  end
+
+  def player_has_moves?(player)
+    !player_legs(player).last.final?
+  end
+
+  def turn
+    current_player
   end
 
   def current_leg
@@ -56,7 +73,19 @@ class GreedSession < ApplicationRecord
     player_legs(player).where(number: opener.number..).map(&:score).sum
   end
 
+  def current_player_score
+    player_score current_player
+  end
+
   def showdown?
-    scores.values.find { |score| score >= SHOWDOWN_SCORE }
+    scores.values.find { |score| showdown_score? score }
+  end
+
+  def score_showdown?(score)
+    score >= SHOWDOWN_SCORE
+  end
+
+  def player_showdown?
+    score_showdown? current_player_score
   end
 end

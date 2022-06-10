@@ -44,6 +44,17 @@ class GreedLeg < ApplicationRecord
     gain&.zero?
   end
 
+  def showdown
+    self.final = true
+    self
+  end
+
+  def showdown!
+    showdown
+    save
+    self
+  end
+
   def pun
     state = {
       gain: gain,

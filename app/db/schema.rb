@@ -33,6 +33,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_06_09_110424) do
     t.integer "session_id", null: false
     t.integer "number"
     t.integer "player"
+    t.boolean "final", default: false
     t.index ["session_id"], name: "index_greed_legs_on_session_id"
   end
 
@@ -49,7 +50,6 @@ ActiveRecord::Schema[7.0].define(version: 2022_06_09_110424) do
 
   create_table "greed_sessions", force: :cascade do |t|
     t.integer "players", default: 2
-    t.integer "turn", default: 1
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
