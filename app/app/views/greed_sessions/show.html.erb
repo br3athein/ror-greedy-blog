@@ -2,20 +2,21 @@
 <%= link_to 'Index', greed_sessions_path %>
 <hr/>
 
-<% if @greed_session.winner %>
-  Won by player <%= @greed_session.winner %>!
-<% end %>
-
 <h3>(<%= @greed_session.players %> players)</h3>
 <%= render 'scoreboard' %>
-<h4><%= if @greed_session.showdown? then 'SHOWDOWN!' else 'Business as usual' end %></h4>
-<h4>Turn of player #<%= @greed_session.turn %> (score: <%= @greed_session.player_score %>, <%= if @greed_session.player_in_game? then 'in game' else 'not in game' end %>)</h4>
 
 <% if @greed_session.legs.any? %>
 <% @leg = @greed_session.current_leg %>
 <% end %>
 
-<%= render 'controls' %>
+<% if @greed_session.winner %>
+  <h1>Player <%= @greed_session.winner %> wins!</h1>
+<% else %>
+  <h4><%= if @greed_session.showdown? then 'SHOWDOWN!' else 'Business as usual' end %></h4>
+  <h4>Turn of player #<%= @greed_session.turn %> (score: <%= @greed_session.player_score %>, <%= if @greed_session.player_in_game? then 'in game' else 'not in game' end %>)</h4>
+  <%= render 'controls' %>
+<% end %>
+
 <% if @leg %>
 <hr/>
 <h3>Current leg:</h3>
