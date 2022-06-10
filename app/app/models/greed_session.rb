@@ -4,6 +4,8 @@ class GreedSession < ApplicationRecord
 
   after_create :advance
 
+  ENTRY_SCORE = 300
+
   def advance
     legs.create player: next_player
   end
@@ -31,7 +33,25 @@ class GreedSession < ApplicationRecord
     end.to_h
   end
 
+  def player_legs(player)
+    legs.where(player: player)
+  end
+
+  def opener_leg(player)
+    player_legs(player).find { |leg| leg.score >= ENTRY_SCORE }
+  end
+
+  def persistent_legs
+    opener = opener_leg(player)
+    return [] unless opener
+
+    player_legs(player).where(number: opener.number..)
+  end
+
   def player_score(player)
-    legs.where(player: player).map(&:score).sum
+    opener = opener_leg(player)
+    return 0 unless opener
+
+    player_legs(player).where(number: opener.number..).map(&:score).sum
   end
 end
