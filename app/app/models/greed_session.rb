@@ -8,16 +8,35 @@ class GreedSession < ApplicationRecord
   SHOWDOWN_SCORE = 3000
 
   def advance
-    current_leg.terminate! if player_showdown?
-    if player_has_moves? next_player
-      legs.create player: next_player
-    else
-      proclaim_winner
-    end
+    return legs.create player: next_player unless sudden_death!
+
+    proclaim_winner!
+  end
+
+  # Check if the game has ended.
+  def sudden_death!
+    self.showdown_initiator ||= current_player if player_hits_showdown?
+
+    # game always ends in the showdown
+    return false unless showdown?
+
+    save
+
+    # ...after each of the players has broke a leg in it.
+    next_player == showdown_initiator
+  end
+
+  def showdown?
+    !showdown_initiator.nil?
   end
 
   def proclaim_winner
-    self.winner = player
+    self.winner, = scores.max_by { |_, score| score }
+  end
+
+  def proclaim_winner!
+    proclaim_winner
+    save
   end
 
   def current_player
@@ -51,41 +70,33 @@ class GreedSession < ApplicationRecord
     end.to_h
   end
 
-  def player_legs(player)
+  def player_legs(player = current_player)
     legs.where(player: player)
   end
 
-  def opener_leg(player)
+  def opener_leg(player = current_player)
     player_legs(player).find { |leg| leg.score >= ENTRY_SCORE }
   end
 
-  def persistent_legs
+  def persistent_legs(player = current_player)
     opener = opener_leg(player)
     return [] unless opener
 
     player_legs(player).where(number: opener.number..)
   end
 
-  def player_score(player)
-    opener = opener_leg(player)
+  def player_score(player = current_player)
+    opener = opener_leg player
     return 0 unless opener
 
     player_legs(player).where(number: opener.number..).map(&:score).sum
   end
 
-  def current_player_score
-    player_score current_player
+  def player_in_game?(player = current_player)
+    !opener_leg(player).nil?
   end
 
-  def showdown?
-    scores.values.find { |score| showdown_score? score }
-  end
-
-  def score_showdown?(score)
-    score >= SHOWDOWN_SCORE
-  end
-
-  def player_showdown?
-    score_showdown? current_player_score
+  def player_hits_showdown?
+    player_score >= SHOWDOWN_SCORE
   end
 end

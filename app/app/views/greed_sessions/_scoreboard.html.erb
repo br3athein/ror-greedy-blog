@@ -1,9 +1,6 @@
-<details>
-  <summary>Scoreboard</summary>
-  <table style="text-align: right">
-    <tr><th>Player</th><th>Score</th></tr>
-    <% @greed_session.scores.map do |player, score| %>
-      <tr><td><%= player %></td><td><%= score %></td></tr>
-    <% end %>
-  </table>
-</details>
+<table style="text-align: right">
+  <tr><th>Player</th><th>Score</th></tr>
+  <% @greed_session.scores.map do |player, score| %>
+    <tr><td><%= player %></td><td><%= score %></td></tr>
+  <% end %>
+</table>
