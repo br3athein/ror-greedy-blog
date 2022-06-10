@@ -58,7 +58,7 @@ class GreedLeg < ApplicationRecord
     in { gain: 0, rolls: 1 }
       'Oof, tough luck!'
     in { botched: true }
-      %|Welp, that's why the game is called "Greed".|
+      %(Welp, that's why the game is called "Greed".)
     in { rolls: 1, terminal: true }
       'Strike!'
     in { terminal: true }
@@ -79,9 +79,15 @@ class GreedLeg < ApplicationRecord
     else "What's it gonna be?" end
   end
 
+  def peers
+    session.legs.select do |leg|
+      leg.player == player
+    end
+  end
+
   private
 
   def assign_number
-    self.number = session.legs.count + 1
+    self.number = peers.count + 1
   end
 end
