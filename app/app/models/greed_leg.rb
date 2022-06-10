@@ -8,15 +8,25 @@ class GreedLeg < ApplicationRecord
     rolls.create
   end
 
-  def gain
-    return nil unless rolls.any?
-    return rolls.last.score if rolls.count == 1
+  def gain(on = rolls.count)
+    raise ArgumentError, "`on' is the natural order argument!" if on.negative?
 
-    rolls.last.score - rolls[-2].score
+    return nil if on.zero?
+    return rolls.first.score if on == 1
+
+    rolls[on - 1].score - rolls[on - 2].score
   end
 
   def terminal?
-    rolls.last.terminal? || gain.zero?
+    rolls.last.terminal? || botched?
+  end
+
+  def scoreable?
+    !botched?
+  end
+
+  def botched?
+    gain.zero?
   end
 
   private
