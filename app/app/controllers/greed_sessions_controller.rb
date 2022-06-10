@@ -33,10 +33,7 @@ class GreedSessionsController < ApplicationController
   # Transfer the turn to other player.
   def pass
     @greed_session = GreedSession.find params[:id]
-
-    @greed_session.advance_player_turn
-    @greed_session.initial_roll
-    @greed_session.save
+    @greed_session.advance
 
     redirect_to @greed_session
   end
