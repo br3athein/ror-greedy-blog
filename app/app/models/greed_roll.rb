@@ -53,12 +53,11 @@ class GreedRoll < ApplicationRecord
     leg.rolls.where(number: number - 1).first
   end
 
-  # Roll non-scoring positions. Or everything, if this is a first roll.
   def roll
     ancestor = fetch_ancestor
 
     self.dice = map_dice do |i|
-      if ancestor&.scoring? i
+      if ancestor&.scoring?(i) && !ancestor.terminal?
         ancestor.dice[i]
       else
         roll_single

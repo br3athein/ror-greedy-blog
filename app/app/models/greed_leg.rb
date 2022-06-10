@@ -14,14 +14,29 @@ class GreedLeg < ApplicationRecord
     return nil if on.zero?
     return rolls.first.score if on == 1
 
-    rolls[on - 1].score - rolls[on - 2].score
+    pre_last, last = rolls.second_to_last, rolls.last
+    return last.score if pre_last.terminal?
+
+    last.score - pre_last.score
   end
 
-  def terminal?
-    rolls.last&.terminal? || botched?
+  def score
+    return 0 if botched? || rolls.empty?
+
+    total = rolls.select(&:terminal?).inject(0) do |acc, roll|
+      acc + roll.score
+    end
+
+    total += rolls.last.score unless rolls.last.terminal?
+
+    total
   end
 
-  def scoreable?
+  def active?
+    session.legs.last == self
+  end
+
+  def live?
     !botched?
   end
 
