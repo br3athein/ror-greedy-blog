@@ -4,6 +4,12 @@ class GreedLeg < ApplicationRecord
 
   before_create :assign_number
 
+  def add_roll
+    rolls.create
+  end
+
+  private
+
   def assign_number
     self.number = session.legs.count + 1
   end

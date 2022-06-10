@@ -1,10 +1,9 @@
 class GreedRoll < ApplicationRecord
-  belongs_to :session, class_name: 'GreedSession', foreign_key: :session_id
-  after_create :assign_number
+  belongs_to :leg, class_name: 'GreedLeg', foreign_key: :leg_id
+  before_create :assign_number
+  before_create :roll
 
-  def assign_number
-    self.number = session.rolls.count + 1
-  end
+  SCORING_DICES = [1, 5].freeze
 
   def dice(pos = nil)
     if pos.is_a? Integer
@@ -16,7 +15,7 @@ class GreedRoll < ApplicationRecord
 
   def dice=(new_dice)
     new_dice.each_with_index do |value, i|
-      send "dice_#{i + 1}=", value
+      send "dice_#{i}=", value
     end
   end
 
@@ -33,38 +32,51 @@ class GreedRoll < ApplicationRecord
     end
   end
 
-  def scoring
-    dice.map do |i|
-      [1, 5].include?(i) || dice.count(i) >= 3
-    end
+  def triple_on?(number)
+    dice.count(number) >= 3
   end
 
   def scoring?(pos)
-    scoring[pos - 1]
+    value = dice[pos]
+    SCORING_DICES.include?(value) || triple_on?(value)
+  end
+
+  def scoring
+    map_dice { |i| scoring? i }
+  end
+
+  def fetch_ancestor
+    leg.rolls.where(number: number - 1).first
   end
 
   # Roll non-scoring positions. Or everything, if this is a first roll.
   def roll
-    previous_roll = session&.rolls&.last
+    ancestor = fetch_ancestor
 
-    map_dice do |i|
-      send "dice_#{i}=", if previous_roll&.scoring?(i)
-                           previous_roll.dice i
-                         else
-                           roll_single
-                         end
+    self.dice = map_dice do |i|
+      if ancestor&.scoring? i
+        ancestor.dice[i]
+      else
+        roll_single
+      end
     end
 
     self
   end
 
+  private
+
   def map_dice(&block)
-    (1..5).map do |i|
+    (0..4).map do |i|
       block.call i
     end
   end
 
   def roll_single
     rand(1..6)
+  end
+
+  def assign_number
+    self.number = leg.rolls.count + 1
   end
 end

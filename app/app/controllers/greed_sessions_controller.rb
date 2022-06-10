@@ -24,7 +24,7 @@ class GreedSessionsController < ApplicationController
   # Roll a new set of dice.
   def roll
     @greed_session = GreedSession.find params[:id]
-    @greed_session.next_roll roll_params
+    @greed_session.current_leg.add_roll
 
     redirect_to @greed_session
   end
@@ -44,13 +44,5 @@ class GreedSessionsController < ApplicationController
 
   def greed_session_params
     params.require(:greed_session).permit(:players)
-  end
-
-  # Allow only `:dice_<i>' 1 thru 5 in `:keep'.
-  def roll_params
-    params.require(:keep).permit(
-      (1..5).map do |i|
-        "dice_#{i}".to_sym
-      end)
   end
 end

@@ -19,4 +19,8 @@ class GreedSession < ApplicationRecord
 
     current_player + 1
   end
+
+  def current_leg
+    legs.last
+  end
 end
