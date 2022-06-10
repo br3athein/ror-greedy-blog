@@ -29,6 +29,15 @@ class GreedLeg < ApplicationRecord
     gain.zero?
   end
 
+  def pun
+    case [gain, rolls.count, rolls.last.terminal?]
+    in [0, 1, _]
+      'Oof, tough luck!'
+    in [_, 1, true]
+      'Strike!'
+    else nil end
+  end
+
   private
 
   def assign_number
