@@ -45,14 +45,38 @@ class GreedLeg < ApplicationRecord
   end
 
   def pun
-    case [gain, rolls.count, rolls.last&.terminal?]
-    in [0, 1, _]
+    state = {
+      gain: gain,
+      score: score,
+      rolls: rolls.count,
+      terminal: rolls.last&.terminal?,
+      botched: botched?,
+      active: active?
+    }
+
+    case state
+    in { gain: 0, rolls: 1 }
       'Oof, tough luck!'
-    in [0, _, false]
+    in { botched: true }
       %|Welp, that's why the game is called "Greed".|
-    in [_, 1, true]
+    in { rolls: 1, terminal: true }
       'Strike!'
-    else nil end
+    in { terminal: true }
+      "Nice, keep 'em coming!"
+
+    # TODO: calibrate the score table, UI gets over-excited real fucking fast
+    in { score: (1...500) }
+      "Meh, I've seen better."
+    in { score: (500...1000) }
+      'Not great, not terrible.'
+    in { score: (1000...1200) }
+      'Nice run, innit?'
+    in { score: (1200...1500) }
+      'Good job!'
+    in { score: (1500...) }
+      'Sky is the limit.'
+
+    else "What's it gonna be?" end
   end
 
   private

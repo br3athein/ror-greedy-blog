@@ -1,10 +1,9 @@
 <div style="border: 1px solid; margin-top: 20px; padding: 20px">
   <strong>Leg <%= greed_leg.number %> of player <%= greed_leg.player %></strong>
+  | total score: <%= greed_leg.score %>
   <% unless greed_leg.gain.nil? %>
-    | last gain: <%= greed_leg.gain %>
+    | gain: <%= greed_leg.gain %>
   <% end %>
-  <% if pun = greed_leg.pun %>
-    <p><i><%= pun %></i></p>
-  <% end %>
+    <p><i><%= greed_leg.pun %></i></p>
   <%= render greed_leg.rolls %>
 </div>
