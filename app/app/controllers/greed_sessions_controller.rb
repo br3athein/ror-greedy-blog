@@ -24,7 +24,10 @@ class GreedSessionsController < ApplicationController
   # Roll a new set of dice.
   def roll
     @greed_session = GreedSession.find params[:id]
-    @greed_session.current_leg.add_roll
+    leg = @greed_session.current_leg
+    leg.add_roll
+
+    @greed_session.advance if leg.terminal?
 
     redirect_to @greed_session
   end
