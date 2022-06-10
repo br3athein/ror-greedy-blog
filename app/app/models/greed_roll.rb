@@ -2,28 +2,24 @@ class GreedRoll < ApplicationRecord
   belongs_to :session, class_name: 'GreedSession', foreign_key: :session_id
   after_create :assign_number
 
-  def dice
-    (1..5).map { |i| get_dice i }
+  def assign_number
+    self.number = session.rolls.count + 1
   end
 
-  def kept?(pos)
-    send "dice_#{pos}_kept"
-  end
+  def dice(pos = nil)
+    dice = ->(i) { send "dice_#{i}" }
 
-  def get_dice(pos)
-    send "dice_#{pos}"
-  end
-
-  def initial_roll
-    (1..5).each do |i|
-      send "dice_#{i}=", roll_single
+    if pos.is_a? Integer
+      dice.call pos
+    else
+      (1..5).map { |i| dice.call i }
     end
-
-    self
   end
 
-  def roll_single
-    rand(1..6)
+  def dice=(new_dice)
+    new_dice.each_with_index do |value, i|
+      send "dice_#{i + 1}=", value
+    end
   end
 
   def score
@@ -39,7 +35,31 @@ class GreedRoll < ApplicationRecord
     end
   end
 
-  def assign_number
-    self.number = session.rolls.count + 1
+  def scoring
+    dice.map do |i|
+      [1, 5].include?(i) || dice.count(i) >= 3
+    end
+  end
+
+  def scoring?(pos)
+    scoring.include? dice[pos]
+  end
+
+  # Roll non-scoring positions. Or everything, if this is a first roll.
+  def roll
+    previous_roll = self.session.rolls.last
+    map_dice do |i|
+
+    end
+  end
+
+  def map_dice(&block)
+    (1..5).each do |i|
+      block.call i, dice[i]
+    end
+  end
+
+  def roll_single
+    rand(1..6)
   end
 end
