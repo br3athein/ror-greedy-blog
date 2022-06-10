@@ -29,30 +29,32 @@ ActiveRecord::Schema[7.0].define(version: 2022_06_09_110424) do
     t.index ["article_id"], name: "index_comments_on_article_id"
   end
 
-  create_table "greed_rolls", force: :cascade do |t|
+  create_table "greed_legs", force: :cascade do |t|
     t.integer "session_id", null: false
-    t.integer "player"
     t.integer "number"
+    t.integer "player"
+    t.index ["session_id"], name: "index_greed_legs_on_session_id"
+  end
+
+  create_table "greed_rolls", force: :cascade do |t|
+    t.integer "leg_id", null: false
+    t.integer "number"
+    t.integer "dice_0"
     t.integer "dice_1"
     t.integer "dice_2"
     t.integer "dice_3"
     t.integer "dice_4"
-    t.integer "dice_5"
-    t.boolean "dice_1_kept"
-    t.boolean "dice_2_kept"
-    t.boolean "dice_3_kept"
-    t.boolean "dice_4_kept"
-    t.boolean "dice_5_kept"
-    t.index ["session_id"], name: "index_greed_rolls_on_session_id"
+    t.index ["leg_id"], name: "index_greed_rolls_on_leg_id"
   end
 
   create_table "greed_sessions", force: :cascade do |t|
-    t.integer "players"
+    t.integer "players", default: 2
     t.integer "turn", default: 1
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
   add_foreign_key "comments", "articles"
-  add_foreign_key "greed_rolls", "greed_sessions", column: "session_id"
+  add_foreign_key "greed_legs", "greed_sessions", column: "session_id"
+  add_foreign_key "greed_rolls", "greed_legs", column: "leg_id"
 end

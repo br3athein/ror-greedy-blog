@@ -5,14 +5,10 @@
 <h3>(<%= @greed_session.players %> players)</h3>
 <h4>Turn of player #<%= @greed_session.turn %></h4>
 
-<%= render 'greed_rolls/form' %>
-<%= button_to 'End turn', "#{greed_session_path @greed_session}/pass" %>
-
-<% if @greed_session.rolls.any? %>
-<h3>Latest roll</h3>
-<%= render @greed_session.rolls.last %>
-<hr/>
+<% if @greed_session.legs.any? and @greed_session.legs.last.rolls.any? %>
+Last roll:
+<%= render @greed_session.legs.last.rolls.last %>
 <% end %>
+<%= render 'greed_rolls/controls' %>
 
-<h3><%= @greed_session.rolls.count %> rolls so far</h3>
-<%= render @greed_session.rolls %>
+<%= render @greed_session.legs %>

@@ -9,11 +9,10 @@ Rails.application.routes.draw do
   end
 
   # TODO: try moving the following actions inside `:greed_sessions'
-  post 'greed_sessions/:id/roll' => 'greed_sessions#roll'
-  post 'greed_sessions/:id/pass' => 'greed_sessions#pass'
+  post '/greed_sessions/:id/roll' => 'greed_sessions#roll'
+  post '/greed_sessions/:id/pass' => 'greed_sessions#pass'
 
   resources :greed_sessions do
     # resources :greed_rolls
-
   end
 end
