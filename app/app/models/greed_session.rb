@@ -15,6 +15,7 @@ class GreedSession < ApplicationRecord
   end
 
   def next_player
+    return 1 unless legs.any?
     return 1 if current_player == players
 
     current_player + 1
